@@ -10,5 +10,6 @@ ESP32 and INA219 based photovoltaic powermeter
 #### I2C bus
 * SDA - GPIO 21
 * SCL - GPIO 22
+* address - 0x40
 #### Development Hardware
 ![IMAGE ALT TEXT HERE](https://www.dorstel.de/github/helioMeter_v1.0.png)
