@@ -33,9 +33,12 @@ function doDisplay() {
   id("busvoltage").innerHTML="Bus Voltage: "+busvoltage+" V";
   id("shuntvoltage").innerHTML="Shunt Voltage: "+shuntvoltage+" mV";
   id("loadvoltage").innerHTML="Load Voltage: "+loadvoltage+" V";
-  id("current").innerHTML="Current: "+current+" mA";
-  id("power").innerHTML="Power: "+power+" mW";
-  id("buspower").innerHTML="Bus Power: "+buspower+" mW";
+  if (Math.abs(current)>1500) { id("current").innerHTML="Current: "+current/1000+" A"; }
+  else { id("current").innerHTML="Current: "+current+" mA"; }
+  if (Math.abs(power)>1500) { id("power").innerHTML="Power: "+power/1000+" W"; }
+  else { id("power").innerHTML="Power: "+power+" mW"; }
+  if (Math.abs(buspower)>1500) { id("buspower").innerHTML="Bus Power: "+buspower/1000+" W"; }
+  else { id("buspower").innerHTML="Bus Power: "+buspower+" mW"; }
   id("busresistance").innerHTML="Bus Resistance: "+busresistance+" Ohm"; }
 
 function getValues() { requestAJAX('getValues'); }
