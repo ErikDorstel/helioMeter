@@ -5,6 +5,7 @@ ESP32 and INA219 based photovoltaic powermeter
 * works as WLAN client and AP (AP chooser included)
 * WebUI with IP address 192.168.4.1
 * mDNS hostname heliometer.local
+* DNS hostname heliometer.local (WLAN AP mode only)
 * shunt resistors 0.1 Ohm and 0.01 Ohm parallel (Rpar = 0.00909 Ohm)
 * measures up to 35 amps
 #### I2C bus
