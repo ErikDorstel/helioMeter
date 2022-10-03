@@ -10,7 +10,7 @@ const char *index_html=R"(
 <meta charset="utf-8">
 <style>
 html   { font-family:Arial; }
-div    { background-color:#f0f0f0; color:#000000; border:0px; padding:0px; margin:0px; text-align:center; width:100%; user-select:none; display:inline-block; }
+div    { background-color:#e0e0e0; color:#000000; border:0px; padding:0px; margin:0px; text-align:center; width:100%; user-select:none; display:inline-block; }
 select { background-color:#f0f0f0; color:#000000; font-size:1.0em; border:0px; padding:0px; margin:0px; }
 table  { margin-left:auto; margin-right:auto; }
 td     { text-align:right; }
