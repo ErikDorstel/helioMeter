@@ -11,7 +11,7 @@ struct wlanConfigStruct {
 
 struct wlanConfigStruct wlanConfig;
 
-uint32_t wlanTimer=millis()+10000;
+uint32_t wlanTimer=millis()+20000;
 
 void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info) {
   preferences.begin("wlanAuth",false); String ssidStationOld=preferences.getString("ssidStation",""); String passwordStationOld=preferences.getString("passwordStation",""); preferences.end();
@@ -20,11 +20,11 @@ void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info) {
   wlanConfig.statusStation=true; if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " Client with IP address " + WiFi.localIP().toString() + " connected."); } }
 
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
-  wlanConfig.statusStation=false; WiFi.disconnect(); wlanTimer=millis()+10000;
+  wlanConfig.statusStation=false; WiFi.disconnect(); wlanTimer=millis()+20000;
   if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " disconnected."); } }
 
 void connectWLAN() {
-  WiFi.setHostname(wlanConfig.ssidAP); WiFi.disconnect(); wlanTimer=millis()+10000;
+  WiFi.setHostname(wlanConfig.ssidAP); WiFi.disconnect(); wlanTimer=millis()+20000;
   WiFi.begin(wlanConfig.ssidStation.c_str(),wlanConfig.passwordStation.c_str()); }
 
 void initWLAN() {
@@ -40,7 +40,7 @@ void reconnectWLAN() {
   connectWLAN(); if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " try connect."); } }
 
 void wlanWorker() {
-  if (millis()>=wlanTimer) { wlanTimer=millis()+10000;
+  if (millis()>=wlanTimer) { wlanTimer=millis()+20000;
     if (!wlanConfig.statusStation) {
       preferences.begin("wlanAuth",false); String ssidStationOld=preferences.getString("ssidStation",""); String passwordStationOld=preferences.getString("passwordStation",""); preferences.end();
       if (ssidStationOld==wlanConfig.ssidStation && passwordStationOld==wlanConfig.passwordStation && WiFi.softAPgetStationNum()==0) {

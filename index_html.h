@@ -33,16 +33,20 @@ function doDisplay() {
   id("busvoltage").innerHTML="Bus Voltage: "+busvoltage+" V";
   id("shuntvoltage").innerHTML="Shunt Voltage: "+shuntvoltage+" mV";
   id("loadvoltage").innerHTML="Load Voltage: "+loadvoltage+" V";
-  if (Math.abs(current)>1500) { id("current").innerHTML="Current: "+current/1000+" A"; }
-  else { id("current").innerHTML="Current: "+current+" mA"; }
-  if (Math.abs(power)>1500) { id("power").innerHTML="Power: "+power/1000+" W"; }
-  else { id("power").innerHTML="Power: "+power+" mW"; }
-  if (Math.abs(buspower)>1500) { id("buspower").innerHTML="Bus Power: "+buspower/1000+" W"; }
-  else { id("buspower").innerHTML="Bus Power: "+buspower+" mW"; }
-  id("busresistance").innerHTML="Bus Resistance: "+busresistance+" Ohm"; }
+  id("current").innerHTML="Current: "+doAutoRange(current," mA");
+  id("power").innerHTML="Power: "+doAutoRange(power," mW");
+  id("buspower").innerHTML="Bus Power: "+doAutoRange(buspower," mW");
+  id("busresistance").innerHTML="Bus Resistance: "+doAutoRange(busresistance," Ohm"); }
+  
 
 function getValues() { requestAJAX('getValues'); }
 function doRange(doSet) { }
+function doAutoRange(value,unit) {
+  if (Math.abs(value)>1500) { value=Math.round(value/10)/100;
+    if (unit==" mA") { unit=" A"; }
+    if (unit==" mW") { unit=" W"; }
+    if (unit==" Ohm") { unit=" kOhm"; } }
+  return value+unit; }
 
 function requestAJAX(value) {
   ajaxObj[value]=new XMLHttpRequest; ajaxObj[value].url=value; ajaxObj[value].open("GET",value,true);
