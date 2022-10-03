@@ -21,7 +21,7 @@ void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
   wlanConfig.statusStation=false; WiFi.disconnect(); wlanTimer=millis()+20000;
-  if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " disconnected."); } }
+  if (debug) { Serial.println("WLAN Station disconnected."); } }
 
 void connectWLAN() {
   WiFi.setHostname(wlanConfig.ssidAP); WiFi.disconnect(); wlanTimer=millis()+20000;
@@ -41,7 +41,6 @@ void reconnectWLAN() {
 
 void wlanWorker() {
   if (millis()>=wlanTimer) { wlanTimer=millis()+20000;
-    if (!wlanConfig.statusStation) {
-      preferences.begin("wlanAuth",false); String ssidStationOld=preferences.getString("ssidStation",""); String passwordStationOld=preferences.getString("passwordStation",""); preferences.end();
-      if (ssidStationOld==wlanConfig.ssidStation && passwordStationOld==wlanConfig.passwordStation && WiFi.softAPgetStationNum()==0) {
-        connectWLAN(); if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " try autoreconnect."); } } } } }
+    if (!wlanConfig.statusStation && WiFi.softAPgetStationNum()==0) {
+      preferences.begin("wlanAuth",false); wlanConfig.ssidStation=preferences.getString("ssidStation",""); wlanConfig.passwordStation=preferences.getString("passwordStation",""); preferences.end();
+      connectWLAN(); if (debug) { Serial.println("WLAN Station " + wlanConfig.ssidStation + " try autoreconnect."); } } } }

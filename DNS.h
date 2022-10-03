@@ -80,4 +80,4 @@ void dnsWorker() {
       if (memcmp(request+2,filter,hostlen+22)==0) { replyMCAST();
         if (debug) { Serial.println("Reply MDNS Packet to " + mdnsServer.remoteIP().toString() + "."); } } } }
 
-  if (millis()>=dnsTimer) { dnsTimer=millis()+10000; replyMCAST(); } }
+  if (millis()>=dnsTimer) { dnsTimer=millis()+30000; replyMCAST(); } }
