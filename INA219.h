@@ -27,4 +27,5 @@ void ina219Worker() {
     ina219Data.current=ina219.getCurrent_mA()*ina219Data.rfactor;
     ina219Data.power=ina219.getPower_mW()*ina219Data.rfactor;
     ina219Data.buspower=ina219Data.busvoltage*ina219Data.current;
-    ina219Data.busresistance=ina219Data.busvoltage/ina219Data.current*1000; } }
+    if (ina219Data.current!=0) { ina219Data.busresistance=ina219Data.busvoltage/ina219Data.current*1000; }
+    else { ina219Data.busresistance=0; } } }
