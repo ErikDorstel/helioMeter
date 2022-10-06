@@ -37,7 +37,6 @@ function doDisplay() {
   id("power").innerHTML="Power: "+doAutoRange(power," mW");
   id("buspower").innerHTML="Bus Power: "+doAutoRange(buspower," mW");
   id("busresistance").innerHTML="Bus Resistance: "+doAutoRange(busresistance," Ohm"); }
-  
 
 function getValues() { requestAJAX('getValues'); }
 function doRange(doSet) { }
