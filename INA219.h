@@ -11,7 +11,9 @@ struct ina219Struct {
   float current=0;
   float power=0;
   float buspower=0;
-  float busresistance=0; };
+  float busresistance=0;
+  float charge=0;
+  float energy=0; };
 
 struct ina219Struct ina219Data;
 
@@ -28,4 +30,6 @@ void ina219Worker() {
     ina219Data.power=ina219.getPower_mW()*ina219Data.rfactor;
     ina219Data.buspower=ina219Data.busvoltage*ina219Data.current;
     if (ina219Data.current!=0) { ina219Data.busresistance=ina219Data.busvoltage/ina219Data.current*1000; }
-    else { ina219Data.busresistance=0; } } }
+    else { ina219Data.busresistance=0; }
+    ina219Data.charge+=ina219Data.current/3600;
+    ina219Data.energy+=ina219Data.power/3600; } }
