@@ -11,7 +11,8 @@ String httpget(String request) {
     response+=String(ina219Data.power,10) + ",";
     response+=String(ina219Data.resistance,10) + ",";
     response+=String(ina219Data.charge,10) + ",";
-    response+=String(ina219Data.energy,10) + ","; }
+    response+=String(ina219Data.energy,10) + ",";
+    response+=String(millis()/1000) + ","; }
 
   // WLAN Choose specific pages
 

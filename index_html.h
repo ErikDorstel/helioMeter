@@ -26,7 +26,7 @@ td     { text-align:right; }
 <script>
 
 function webUIinit() {
-  appName="&nbsp;"; appDesc="&nbsp;"; busvoltage=0; shuntvoltage=0; loadvoltage=0; current=0; power=0; resistance=0; charge=0; energy=0;
+  appName="&nbsp;"; appDesc="&nbsp;"; busvoltage=0; shuntvoltage=0; loadvoltage=0; current=0; power=0; resistance=0; charge=0; energy=0; runtime=0;
   ajaxObj=[]; requestAJAX('appName'); getValues(); doDisplay(); getValuesID=window.setInterval("getValues();",5000); }
 
 function doDisplay() {
@@ -37,7 +37,8 @@ function doDisplay() {
   id("power").innerHTML="Power: "+doAutoRange(power," mW");
   id("resistance").innerHTML="Resistance: "+doAutoRange(resistance," &Omega;");
   id("charge").innerHTML="Charge: "+doAutoRange(charge," mAh");
-  id("energy").innerHTML="Energy: "+doAutoRange(energy," mWh"); }
+  id("energy").innerHTML="Energy: "+doAutoRange(energy," mWh");
+  id("runtime").innerHTML="Running Time: "+doAutoTime(runtime); }
 
 function getValues() { requestAJAX('getValues'); }
 function doRange(doSet) { }
@@ -61,6 +62,11 @@ function doAutoRange(value,unit) {
     if (unit==" mWh") { unit=" &mu;Wh"; } }
   value=Math.round(value*100)/100;
   return value+unit; }
+function doAutoTime(value) {
+  days=Math.floor(value/86400); value-=days*86400;
+  hours=Math.floor(value/3600); value-=hours*3600;
+  minutes=Math.floor(value/60); value-=minutes*60;
+  return days+" days "+hours.toString().padStart(2,'0')+":"+minutes.toString().padStart(2,'0')+":"+value.toString().padStart(2,'0'); }
 
 function requestAJAX(value) {
   ajaxObj[value]=new XMLHttpRequest; ajaxObj[value].url=value; ajaxObj[value].open("GET",value,true);
@@ -79,7 +85,8 @@ function replyAJAX(event) {
       power=event.target.responseText.split(",")[4]*1;
       resistance=event.target.responseText.split(",")[5]*1;
       charge=event.target.responseText.split(",")[6]*1;
-      energy=event.target.responseText.split(",")[7]*1; doDisplay(); } } }
+      energy=event.target.responseText.split(",")[7]*1;
+      runtime=event.target.responseText.split(",")[8]*1; doDisplay(); } } }
 
 function mapValue(value,inMin,inMax,outMin,outMax) { return (value-inMin)*(outMax-outMin)/(inMax-inMin)+outMin; }
 function id(id) { return document.getElementById(id); }
@@ -100,6 +107,7 @@ function id(id) { return document.getElementById(id); }
 <div><div class="x1" id="resistance"></div></div>
 <div><div class="x1" id="charge"></div></div>
 <div><div class="x1" id="energy"></div></div>
+<div><div class="x1" id="runtime"></div></div>
 </div>
 
 </body></html>
