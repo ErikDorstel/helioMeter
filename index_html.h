@@ -26,33 +26,42 @@ td     { text-align:right; }
 <script>
 
 function webUIinit() {
-  appName="&nbsp;"; appDesc="&nbsp;"; busvoltage=0; shuntvoltage=0; loadvoltage=0; current=0; power=0; buspower=0; busresistance=0; charge=0; energy=0;
-  ajaxObj=[]; requestAJAX('appName'); getValues(); doDisplay(); getValuesID=window.setInterval("getValues();",1000); }
+  appName="&nbsp;"; appDesc="&nbsp;"; busvoltage=0; shuntvoltage=0; loadvoltage=0; current=0; power=0; buspower=0; busresistance=0; charge=0; energy=0; busenergy=0;
+  ajaxObj=[]; requestAJAX('appName'); getValues(); doDisplay(); getValuesID=window.setInterval("getValues();",5000); }
 
 function doDisplay() {
-  id("busvoltage").innerHTML="Bus Voltage: "+busvoltage+" V";
-  id("shuntvoltage").innerHTML="Shunt Voltage: "+shuntvoltage+" mV";
-  id("loadvoltage").innerHTML="Load Voltage: "+loadvoltage+" V";
+  id("busvoltage").innerHTML="Bus Voltage: "+doAutoRange(busvoltage," V");
+  id("shuntvoltage").innerHTML="Shunt Voltage: "+doAutoRange(shuntvoltage," mV");
+  id("loadvoltage").innerHTML="Load Voltage: "+doAutoRange(loadvoltage," V");
   id("current").innerHTML="Current: "+doAutoRange(current," mA");
   id("power").innerHTML="Power: "+doAutoRange(power," mW");
   id("buspower").innerHTML="Bus Power: "+doAutoRange(buspower," mW");
-  id("busresistance").innerHTML="Bus Resistance: "+doAutoRange(busresistance," Ohm");
+  id("busresistance").innerHTML="Bus Resistance: "+doAutoRange(busresistance," &Omega;");
   id("charge").innerHTML="Charge: "+doAutoRange(charge," mAh");
-  id("energy").innerHTML="Energy: "+doAutoRange(energy," mWh"); }
+  id("energy").innerHTML="Energy: "+doAutoRange(energy," mWh");
+  id("busenergy").innerHTML="Bus Energy: "+doAutoRange(busenergy," mWh"); }
 
 function getValues() { requestAJAX('getValues'); }
 function doRange(doSet) { }
 function doAutoRange(value,unit) {
-  if (Math.abs(value)>1500) { value=Math.round(value/10)/100;
+  if (Math.abs(value)>1500000) { value/=1000000;
+    if (unit==" mAh") { unit=" kAh"; }
+    if (unit==" mWh") { unit=" kWh"; } }
+  if (Math.abs(value)>1500) { value/=1000;
     if (unit==" mA") { unit=" A"; }
     if (unit==" mW") { unit=" W"; }
-    if (unit==" Ohm") { unit=" kOhm"; }
+    if (unit==" &Omega;") { unit=" k&Omega;"; }
     if (unit==" mAh") { unit=" Ah"; }
     if (unit==" mWh") { unit=" Wh"; } }
-  if (Math.abs(value)>1500) { value=Math.round(value/10)/100;
-    if (unit==" W") { unit=" kW"; }
-    if (unit==" Ah") { unit=" kAh"; }
-    if (unit==" Wh") { unit=" kWh"; } }
+  if (Math.abs(value)<1.5) { value*=1000;
+    if (unit==" mV") { unit=" &mu;V"; }
+    if (unit==" V") { unit=" mV"; }
+    if (unit==" mA") { unit=" &mu;A"; }
+    if (unit==" mW") { unit=" &mu;W"; }
+    if (unit==" &Omega;") { unit=" m&Omega;"; }
+    if (unit==" mAh") { unit=" &mu;Ah"; }
+    if (unit==" mWh") { unit=" &mu;Wh"; } }
+  value=Math.round(value*100)/100;
   return value+unit; }
 
 function requestAJAX(value) {
@@ -73,7 +82,8 @@ function replyAJAX(event) {
       buspower=event.target.responseText.split(",")[5]*1;
       busresistance=event.target.responseText.split(",")[6]*1;
       charge=event.target.responseText.split(",")[7]*1;
-      energy=event.target.responseText.split(",")[8]*1; doDisplay(); } } }
+      energy=event.target.responseText.split(",")[8]*1;
+      busenergy=event.target.responseText.split(",")[9]*1; doDisplay(); } } }
 
 function mapValue(value,inMin,inMax,outMin,outMax) { return (value-inMin)*(outMax-outMin)/(inMax-inMin)+outMin; }
 function id(id) { return document.getElementById(id); }
@@ -95,6 +105,7 @@ function id(id) { return document.getElementById(id); }
 <div><div class="x1" id="busresistance"></div></div>
 <div><div class="x1" id="charge"></div></div>
 <div><div class="x1" id="energy"></div></div>
+<div><div class="x1" id="busenergy"></div></div>
 </div>
 
 </body></html>

@@ -4,15 +4,16 @@ String httpget(String request) {
   // webUI specific pages
 
   if (request.indexOf("/getValues")>=0) {
-    response+=String(ina219Data.busvoltage) + ",";
-    response+=String(ina219Data.shuntvoltage) + ",";
-    response+=String(ina219Data.loadvoltage) + ",";
-    response+=String(ina219Data.current) + ",";
-    response+=String(ina219Data.power) + ",";
-    response+=String(ina219Data.buspower) + ",";
-    response+=String(ina219Data.busresistance) + ",";
-    response+=String(ina219Data.charge) + ",";
-    response+=String(ina219Data.energy) + ","; }
+    response+=String(ina219Data.busvoltage,10) + ",";
+    response+=String(ina219Data.shuntvoltage,10) + ",";
+    response+=String(ina219Data.loadvoltage,10) + ",";
+    response+=String(ina219Data.current,10) + ",";
+    response+=String(ina219Data.power,10) + ",";
+    response+=String(ina219Data.buspower,10) + ",";
+    response+=String(ina219Data.busresistance,10) + ",";
+    response+=String(ina219Data.charge,10) + ",";
+    response+=String(ina219Data.energy,10) + ",";
+    response+=String(ina219Data.busenergy,10) + ","; }
 
   // WLAN Choose specific pages
 
