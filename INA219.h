@@ -19,7 +19,17 @@ struct ina219Struct ina219Data;
 
 uint32_t ina219Timer=0;
 
-void initINA219() { ina219.begin(); }
+void loadValues() {
+  preferences.begin("helioMeter",false);
+  ina219Data.charge=preferences.getFloat("charge",0); ina219Data.energy=preferences.getFloat("energy",0); ina219Data.runtime=preferences.getULong("runtime",0);
+  preferences.end(); }
+
+void saveValues() {
+  preferences.begin("helioMeter",false);
+  preferences.putFloat("charge",ina219Data.charge); preferences.putFloat("energy",ina219Data.energy); preferences.putULong("runtime",ina219Data.runtime);
+  preferences.end(); }
+
+void initINA219() { ina219.begin(); loadValues(); }
 
 void ina219Worker() {
   if (millis()>=ina219Timer) { ina219Timer=millis()+1000;
@@ -32,4 +42,5 @@ void ina219Worker() {
     else { ina219Data.resistance=0; }
     ina219Data.charge+=ina219Data.current/3600;
     ina219Data.energy+=ina219Data.power/3600;
-    ina219Data.runtime++; } }
+    ina219Data.runtime++;
+    if (ina219Data.runtime % 21600 == 0) { saveValues(); } } }

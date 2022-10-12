@@ -27,7 +27,7 @@ td     { text-align:right; }
 
 function webUIinit() {
   appName="&nbsp;"; appDesc="&nbsp;"; busvoltage=0; shuntvoltage=0; loadvoltage=0; current=0; power=0; resistance=0; charge=0; energy=0; runtime=0;
-  ajaxObj=[]; requestAJAX('appName'); getValues(); doDisplay(); getValuesID=window.setInterval("getValues();",5000); }
+  ajaxObj=[]; requestAJAX('appName'); getValues(); doDisplay(); pollValuesID=false; pollValues(); }
 
 function doDisplay() {
   id("busvoltage").innerHTML="Bus Voltage: "+doAutoRange(busvoltage," V");
@@ -40,9 +40,12 @@ function doDisplay() {
   id("energy").innerHTML="Energy: "+doAutoRange(energy," mWh");
   id("runtime").innerHTML="Running Time: "+doAutoTime(runtime); }
 
+function pollValues() { if (pollValuesID) { window.clearInterval(pollValuesID); } pollValuesID=window.setInterval("getValues();",5000); }
 function getValues() { requestAJAX('getValues'); }
-function resetValues() { id("resetValues").style.color="#ffffff"; requestAJAX('resetValues'); requestAJAX('getValues'); }
-function doRange(doSet) { }
+function resetValues() { id("resetValues").style.color="#ffffff"; requestAJAX('resetValues'); pollValues(); getValues(); }
+function loadValues() { id("loadValues").style.color="#ffffff"; requestAJAX('loadValues'); pollValues(); getValues(); }
+function saveValues() { id("saveValues").style.color="#ffffff"; requestAJAX('saveValues'); pollValues(); getValues(); }
+
 function doAutoRange(value,unit) {
   if (Math.abs(value)>1500000) { value/=1000000;
     if (unit==" mAh") { unit=" kAh"; }
@@ -63,6 +66,7 @@ function doAutoRange(value,unit) {
     if (unit==" mWh") { unit=" &mu;Wh"; } }
   value=Math.round(value*100)/100;
   return value+unit; }
+
 function doAutoTime(value) {
   days=Math.floor(value/86400); value-=days*86400;
   hours=Math.floor(value/3600); value-=hours*3600;
@@ -79,6 +83,8 @@ function replyAJAX(event) {
       id("appName").innerHTML=event.target.responseText.split(",")[0];
       id("appDesc").innerHTML=event.target.responseText.split(",")[1]; }
     else if (event.target.url=="resetValues") { id("resetValues").style.color="#000000"; }
+    else if (event.target.url=="loadValues") { id("loadValues").style.color="#000000"; }
+    else if (event.target.url=="saveValues") { id("saveValues").style.color="#000000"; }
     else if (event.target.url=="getValues") {
       busvoltage=event.target.responseText.split(",")[0]*1;
       shuntvoltage=event.target.responseText.split(",")[1]*1;
@@ -110,7 +116,9 @@ function id(id) { return document.getElementById(id); }
 <div><div class="x1" id="charge"></div></div>
 <div><div class="x1" id="energy"></div></div>
 <div><div class="x1" id="runtime"></div></div>
-<div><div class="x1a" id="resetValues" onclick="resetValues();">Reset</div></div>
+<div><div class="x3" id="resetValues" onclick="resetValues();">Reset</div>
+     <div class="x3" id="loadValues" onclick="loadValues();">Load</div>
+     <div class="x3" id="saveValues" onclick="saveValues();">Save</div></div>
 </div>
 
 </body></html>

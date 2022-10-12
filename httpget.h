@@ -19,6 +19,9 @@ String httpget(String request) {
     ina219Data.energy=0;
     ina219Data.runtime=0; }
 
+  else if (request.indexOf("/loadValues")>=0) { loadValues(); }
+  else if (request.indexOf("/saveValues")>=0) { saveValues(); }
+
   // WLAN Choose specific pages
 
   else if (request.indexOf("/appName")>=0) {
