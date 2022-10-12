@@ -12,7 +12,8 @@ struct ina219Struct {
   float power=0;
   float resistance=0;
   float charge=0;
-  float energy=0; };
+  float energy=0;
+  uint32_t runtime; };
 
 struct ina219Struct ina219Data;
 
@@ -30,4 +31,5 @@ void ina219Worker() {
     if (ina219Data.current!=0) { ina219Data.resistance=fabs(ina219Data.busvoltage*1000/ina219Data.current); }
     else { ina219Data.resistance=0; }
     ina219Data.charge+=ina219Data.current/3600;
-    ina219Data.energy+=ina219Data.power/3600; } }
+    ina219Data.energy+=ina219Data.power/3600;
+    ina219Data.runtime++; } }

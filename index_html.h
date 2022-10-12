@@ -41,6 +41,7 @@ function doDisplay() {
   id("runtime").innerHTML="Running Time: "+doAutoTime(runtime); }
 
 function getValues() { requestAJAX('getValues'); }
+function resetValues() { id("resetValues").style.color="#ffffff"; requestAJAX('resetValues'); requestAJAX('getValues'); }
 function doRange(doSet) { }
 function doAutoRange(value,unit) {
   if (Math.abs(value)>1500000) { value/=1000000;
@@ -77,6 +78,7 @@ function replyAJAX(event) {
     if (event.target.url=="appName") {
       id("appName").innerHTML=event.target.responseText.split(",")[0];
       id("appDesc").innerHTML=event.target.responseText.split(",")[1]; }
+    else if (event.target.url=="resetValues") { id("resetValues").style.color="#000000"; }
     else if (event.target.url=="getValues") {
       busvoltage=event.target.responseText.split(",")[0]*1;
       shuntvoltage=event.target.responseText.split(",")[1]*1;
@@ -108,6 +110,7 @@ function id(id) { return document.getElementById(id); }
 <div><div class="x1" id="charge"></div></div>
 <div><div class="x1" id="energy"></div></div>
 <div><div class="x1" id="runtime"></div></div>
+<div><div class="x1a" id="resetValues" onclick="resetValues();">Reset</div></div>
 </div>
 
 </body></html>

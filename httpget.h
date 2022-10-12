@@ -12,7 +12,12 @@ String httpget(String request) {
     response+=String(ina219Data.resistance,10) + ",";
     response+=String(ina219Data.charge,10) + ",";
     response+=String(ina219Data.energy,10) + ",";
-    response+=String(millis()/1000) + ","; }
+    response+=String(ina219Data.runtime) + ","; }
+
+  else if (request.indexOf("/resetValues")>=0) {
+    ina219Data.charge=0;
+    ina219Data.energy=0;
+    ina219Data.runtime=0; }
 
   // WLAN Choose specific pages
 
